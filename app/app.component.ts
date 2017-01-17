@@ -6,27 +6,76 @@ import { Component } from '@angular/core';
   selector: 'app-root', // defines the specific tag to render within.
   template: `
   <div class="container">
-    <h1 id="title">Recipe List</h1>
-   <ul class="noBullets"> <!-- repeater DIRECTIVE --> <!-- tasks is the array and it is assigning each iteration to currentTask temporarly -->
-     <li *ngFor="let recipe of recipes"><h2>{{recipe.title}}</h2> <h4>Ingredients</h4> {{recipe.ingredients}} <br> <h4>Directions</h4> {{recipe.directions}}</li>
-   </ul>
+   <h1>To Do List for {{month}}/{{day}}/{{year}}</h1>
+   <h3>{{currentFocus}}</h3>
+   <ul>
+    <li [class]="priorityColor(currentTask)" (click)="isDone(currentTask)" *ngFor="let currentTask of tasks">{{currentTask.description}} <button (click)="editTask(currentTask)">Edit!</button></li>
+    </ul>
+    <hr>
+    <div>
+      <div *ngIf="selectedTask">
+        <h3>{{selectedTask.description}}</h3>
+        <p>Task Complete? {{selectedTask.done}}</p>
+        <hr>
+        <h3>Edit Task</h3>
+        <label>Enter Task Description:</label>
+        <input [(ngModel)]="selectedTask.description">
+        <label>Enter Task Priority (1-3):</label><br>
+        <input type="radio" [(ngModel)]="selectedTask.priority" [value]="1">1 (Low Priority)<br>
+        <input type="radio" [(ngModel)]="selectedTask.priority" [value]="2">2 (Medium Priority)<br>
+        <input type="radio" [(ngModel)]="selectedTask.priority" [value]="3">3 (High Priority)
+        <button (click)="finishedEditing()">Done</button>
+      </div>
+    </div>
   </div>
   `
 })
 
 //Part 2 CLASS DEFINITION -- determines how it BEHAVES
 export class AppComponent {
-  recipes: Recipe[] = [
-    new Recipe('Oatmeal', "Oats, Water, Honey", "Put oats in boiling water. Add honey when cooked."),
-
-    new Recipe('Salmon', "Fish, lemon", "Bake salmon. Add lemon.")
+  currentFocus: string = 'Angular Homework'; // Dynamic value
+  currentTime = new Date();
+  month: number = this.currentTime.getMonth() + 1;
+  day: number = this.currentTime.getDate();
+  year: number = this.currentTime.getFullYear();
+  //new task constructor to create our task object
+    tasks: Task[] = [
+    new Task('Finish weekend Angular homework for Epicodus course', 3),
+    new Task('Begin brainstorming possible JavaScript group projects', 2),
+    new Task('Add README file to last few Angular repos on GitHub', 2)
   ];
+
+  priorityColor(currentTask){
+  if (currentTask.priority === 3){
+    return "bg-danger";
+  } else if (currentTask.priority === 2) {
+    return  "bg-warning";
+  } else {
+    return "bg-info";
+  }
+}
+
+selectedTask: Task = null;
+
+  editTask(clickedTask) {
+    this.selectedTask = clickedTask;
+  }
+
+  isDone(clickedTask: Task) {
+    if(clickedTask.done === true) {
+      alert("This task is done!");
+    } else {
+      alert("This task is not done. Better get to work!");
+    }
+  }
+
+  finishedEditing() {
+    this.selectedTask = null;
+  }
+
 }
 //class declaration is our MODEL which is also data
-export class Recipe {
-
-  constructor(public title: string, public ingredients: string, public directions: string) { }
+export class Task {
+  public done: boolean = false;
+  constructor(public description: string, public priority: number) {   }
 }
-
-
-//TIP when a variable in a component's class declaration references another variable in the class, it must be prefaced with the this keyword.
