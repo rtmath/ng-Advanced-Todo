@@ -1,0 +1,7 @@
+.noBullets {
+  list-style-type: none;
+}
+
+#title {
+  text-align: center;
+}

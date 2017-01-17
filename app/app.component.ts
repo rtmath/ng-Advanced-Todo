@@ -6,10 +6,9 @@ import { Component } from '@angular/core';
   selector: 'app-root', // defines the specific tag to render within.
   template: `
   <div class="container">
-    <h1>To Do List for {{month}}/{{day}}/{{year}}</h1>
-   <h3>{{currentFocus}}</h3>
-   <ul> <!-- repeater DIRECTIVE --> <!-- tasks is the array and it is assigning each iteration to currentTask temporarly -->
-     <li *ngFor="let currentTask of tasks">{{currentTask.description}}</li>
+    <h1 id="title">Recipe List</h1>
+   <ul class="noBullets"> <!-- repeater DIRECTIVE --> <!-- tasks is the array and it is assigning each iteration to currentTask temporarly -->
+     <li *ngFor="let recipe of recipes"><h2>{{recipe.title}}</h2> <br> {{recipe.ingredients}} <br> {{recipe.directions}}</li>
    </ul>
   </div>
   `
@@ -17,22 +16,16 @@ import { Component } from '@angular/core';
 
 //Part 2 CLASS DEFINITION -- determines how it BEHAVES
 export class AppComponent {
-  currentFocus: string = 'Angular Homework'; // Dynamic value
-  currentTime = new Date();
-  month: number = this.currentTime.getMonth() + 1;
-  day: number = this.currentTime.getDate();
-  year: number = this.currentTime.getFullYear();
-  //new task constructor to create our task object
-  tasks: Task[] = [
-    new Task('Finish weekend Angular homework for Epicodus course'),
-    new Task('Begin brainstorming possible JavaScript group projects'),
-    new Task('Add README file to last few Angular repos on GitHub')
+  recipes: Recipe[] = [
+    new Recipe('Oatmeal', "Oats, Water, Honey", "Put oats in boiling water. Add honey when cooked."),
+
+    new Recipe('Salmon', "Fish, lemon", "Bake salmon. Add lemon.")
   ];
 }
 //class declaration is our MODEL which is also data
-export class Task {
-  public done: boolean = false;
-  constructor(public description: string) { }
+export class Recipe {
+
+  constructor(public title: string, public ingredients: string, public directions: string) { }
 }
 
 
