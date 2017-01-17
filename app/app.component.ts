@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
   <div class="container">
     <h1 id="title">Recipe List</h1>
    <ul class="noBullets"> <!-- repeater DIRECTIVE --> <!-- tasks is the array and it is assigning each iteration to currentTask temporarly -->
-     <li *ngFor="let recipe of recipes"><h2>{{recipe.title}}</h2> <br> {{recipe.ingredients}} <br> {{recipe.directions}}</li>
+     <li *ngFor="let recipe of recipes"><h2>{{recipe.title}}</h2> <h4>Ingredients</h4> {{recipe.ingredients}} <br> <h4>Directions</h4> {{recipe.directions}}</li>
    </ul>
   </div>
   `
